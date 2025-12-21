@@ -43,29 +43,31 @@ consumers:
 
 jwt_secrets:
   - consumer: user-serv
-    key: ntouber-user-serv         # <= 這個要對上 JWT 的 iss
-    secret: ${JWT_SECRET}          # <= 用環境變數注入，和你 user-serv 的 JWT_SECRET 一樣
+    key: ntouber-user-serv      # 會對到 JWT header 的 kid
+    secret: ${JWT_SECRET}
     algorithm: HS256
 
 plugins:
-  # 對指定 routes 開 JWT 驗證
   - name: jwt
     route: v1-protected
     config:
       claims_to_verify: [exp]
-      key_claim_name: iss
+      key_claim_name: kid
+      run_on_preflight: false
 
   - name: jwt
     route: api-protected
     config:
       claims_to_verify: [exp]
-      key_claim_name: iss
+      key_claim_name: kid
+      run_on_preflight: false
 
   - name: jwt
     route: admin-protected
     config:
       claims_to_verify: [exp]
-      key_claim_name: iss
+      key_claim_name: kid
+      run_on_preflight: false
 
   - name: cors
     config:
