@@ -3,7 +3,7 @@ _transform: true
 
 services:
   - name: post-service
-    url: http://post-serv.zeabur.internal:8080
+    url: http://post-serv:8080
     routes:
       - name: post-route
         paths:
@@ -17,7 +17,7 @@ services:
           - OPTIONS
 
   - name: user-service
-    url: http://user-serv.zeabur.internal:8080
+    url: http://user-serv:8080
     routes:
       - name: user-route
         paths:
@@ -31,7 +31,7 @@ services:
           - OPTIONS
 
   - name: admin-service
-    url: http://admin-serv.zeabur.internal:8080
+    url: http://admin-serv:8080
     routes:
       - name: admin-route
         paths:
