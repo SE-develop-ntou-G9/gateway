@@ -3,7 +3,7 @@ _transform: true
 
 services:
   - name: user-serv
-    url: http://ntouber-user.zeabur.internal:8080
+    url: http://user-serv.zeabur.internal:8080
     routes:
       - name: v1
         paths:
@@ -14,7 +14,7 @@ services:
           - https
 
   - name: post-serv
-    url: http://ntouber-post.zeabur.internal:8080
+    url: http://post-serv.zeabur.internal:8080
     routes:
       - name: api
         paths:
@@ -25,7 +25,7 @@ services:
           - https
 
   - name: admin-serv
-    url: http://ntouber-admin.zeabur.internal:8080
+    url: http://admin-serv.zeabur.internal:8080
     routes:
       - name: admin
         paths:
