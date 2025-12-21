@@ -1,0 +1,63 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+  - name: post-service
+    url: http://post-serv.zeabur.internal:8080
+    routes:
+      - name: post-route
+        paths:
+          - /api/posts
+        strip_path: false
+        methods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - OPTIONS
+
+  - name: user-service
+    url: http://user-serv.zeabur.internal:8080
+    routes:
+      - name: user-route
+        paths:
+          - /api/users
+        strip_path: false
+        methods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - OPTIONS
+
+  - name: admin-service
+    url: http://admin-serv.zeabur.internal:8080
+    routes:
+      - name: admin-route
+        paths:
+          - /api/admin
+        strip_path: false
+        methods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - OPTIONS
+
+
+plugins:
+  - name: cors
+    config:
+      origins:
+        - "*"
+      methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+      headers:
+        - Content-Type
+        - Authorization
+      credentials: true
+      max_age: 3600
