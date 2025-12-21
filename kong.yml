@@ -5,32 +5,64 @@ services:
   - name: user-serv
     url: http://ntouber-user.zeabur.internal:8000
     routes:
-      - name: v1
+      # ✅ 登入：不需要 JWT
+      - name: auth-google
+        paths:
+          - /v1/auth/google
+        strip_path: false
+        protocols: [http, https]
+
+      # ✅ 其餘 /v1：需要 JWT（如果你希望 /v1 也保護）
+      - name: v1-protected
         paths:
           - /v1
         strip_path: false
-        protocols:
-          - http
-          - https
+        protocols: [http, https]
 
   - name: post-serv
     url: http://ntouber-post.zeabur.internal:8000
     routes:
-      - name: api
+      - name: api-protected
         paths:
           - /api
         strip_path: false
-        protocols:
-          - http
-          - https
+        protocols: [http, https]
 
   - name: admin-serv
     url: http://ntouber-admin.zeabur.internal:8000
     routes:
-      - name: admin
+      - name: admin-protected
         paths:
           - /admin
         strip_path: false
-        protocols:
-          - http
-          - https
+        protocols: [http, https]
+
+# 讓 Kong 知道用哪個 secret 驗你簽出來的 JWT
+consumers:
+  - username: user-serv
+
+jwt_secrets:
+  - consumer: user-serv
+    key: ntouber-user-serv         # <= 這個要對上 JWT 的 iss
+    secret: ${JWT_SECRET}          # <= 用環境變數注入，和你 user-serv 的 JWT_SECRET 一樣
+    algorithm: HS256
+
+plugins:
+  # 對指定 routes 開 JWT 驗證
+  - name: jwt
+    route: v1-protected
+    config:
+      claims_to_verify: [exp]
+      key_claim_name: iss
+
+  - name: jwt
+    route: api-protected
+    config:
+      claims_to_verify: [exp]
+      key_claim_name: iss
+
+  - name: jwt
+    route: admin-protected
+    config:
+      claims_to_verify: [exp]
+      key_claim_name: iss
