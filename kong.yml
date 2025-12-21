@@ -44,7 +44,7 @@ consumers:
 jwt_secrets:
   - consumer: user-serv
     key: ntouber-user-serv
-    secret: "f96dc63c15c49f1a181ba0d0df75d215381f0c5b12d27487402d66153405da33215da02619237d78f38f9e8bf863a98e"
+    secret: "$(vault://env/JWT_SECRET)"
     algorithm: HS256
 
 plugins:
