@@ -1,6 +1,12 @@
 _format_version: "3.0"
 _transform: true
 
+vaults:
+  - name: env
+    prefix: my-env-vault
+    config:
+      prefix: ""
+
 services:
   - name: user-serv
     url: http://user-serv.zeabur.internal:8080
@@ -44,7 +50,7 @@ consumers:
 jwt_secrets:
   - consumer: user-serv
     key: ntouber-user-serv
-    secret: "$(vault://env/JWT_SECRET)"
+    secret: "{vault://my-env-vault/JWT_SECRET}"
     algorithm: HS256
 
 plugins:
