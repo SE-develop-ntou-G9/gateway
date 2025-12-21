@@ -2,84 +2,35 @@ _format_version: "3.0"
 _transform: true
 
 services:
-  - name: post-serv
-    url: http://post-serv.zeabur.internal:8080
-    routes:
-      - name: post-route
-        protocols: ["http", "https"]
-        paths: ["/api/posts"]
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-
   - name: user-serv
-    url: http://user-serv.zeabur.internal:8080
+    url: http://ntouber-user.zeabur.internal:8000
     routes:
-      - name: user-route
-        protocols: ["http", "https"]
-        paths: ["/v1"]
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+      - name: v1
+        paths:
+          - /v1
+        strip_path: false
+        protocols:
+          - http
+          - https
+
+  - name: post-serv
+    url: http://ntouber-post.zeabur.internal:8000
+    routes:
+      - name: api
+        paths:
+          - /api
+        strip_path: false
+        protocols:
+          - http
+          - https
 
   - name: admin-serv
-    url: http://admin-serv.zeabur.internal:8080
+    url: http://ntouber-admin.zeabur.internal:8000
     routes:
-      - name: admin-route
-        protocols: ["http", "https"]
-        paths: ["/admin"]
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-
-plugins:
-  - name: cors
-    service: post-serv
-    config:
-      origins: ["*"]
-      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-      headers: ["Content-Type", "Authorization"]
-      exposed_headers: ["Authorization"]
-      credentials: true
-      max_age: 3600
-
-  - name: rate-limiting
-    service: post-serv
-    config:
-      minute: 10000
-      limit_by: ip
-      policy: local
-      fault_tolerant: true
-      hide_client_headers: false
-
-  - name: cors
-    service: user-serv
-    config:
-      origins: ["*"]
-      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-      headers: ["Content-Type", "Authorization"]
-      exposed_headers: ["Authorization"]
-      credentials: true
-      max_age: 3600
-
-  - name: rate-limiting
-    service: user-serv
-    config:
-      minute: 10000
-      limit_by: ip
-      policy: local
-      fault_tolerant: true
-      hide_client_headers: false
-
-  - name: cors
-    service: admin-serv
-    config:
-      origins: ["*"]
-      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-      headers: ["Content-Type", "Authorization"]
-      exposed_headers: ["Authorization"]
-      credentials: true
-      max_age: 3600
-
-  - name: rate-limiting
-    service: admin-serv
-    config:
-      minute: 10000
-      limit_by: ip
-      policy: local
-      fault_tolerant: true
-      hide_client_headers: false
+      - name: admin
+        paths:
+          - /admin
+        strip_path: false
+        protocols:
+          - http
+          - https
