@@ -5,7 +5,7 @@ vaults:
   - name: env
     prefix: my-env-vault
     config:
-      prefix: ""
+      prefix: "SECURE_"
 
 services:
   - name: user-serv
