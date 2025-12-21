@@ -21,7 +21,11 @@ services:
     routes:
       - name: user-route
         paths:
-          - /
+          - /users
+          - /drivers
+          - /images
+          - /auth
+          - /notifications
         strip_path: false
         methods:
           - GET
