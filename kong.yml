@@ -18,7 +18,7 @@ services:
         strip_path: false
         protocols: [http, https]
 
-      # ✅ 其餘 /v1：需要 JWT（如果你希望 /v1 也保護）
+      # ✅ 其餘 /v1：需要 JWT
       - name: v1-protected
         paths:
           - /v1
@@ -49,11 +49,12 @@ consumers:
 
 jwt_secrets:
   - consumer: user-serv
-    key: ntouber-user-serv
-    secret: "{vault://my-env-vault/JWT_SECRET}"
+    key: ntouber-user-serv            # 對應 JWT header 的 kid
+    secret: "{vault://my-env-vault/JWT_SECRET}"  # 會去找 env: SECURE_JWT_SECRET
     algorithm: HS256
 
 plugins:
+  # ✅ /v1 (除了 /v1/auth/google) 需要 JWT
   - name: jwt
     route: v1-protected
     config:
@@ -61,20 +62,42 @@ plugins:
       key_claim_name: kid
       run_on_preflight: false
 
+      # ✅ 只從 Authorization header 取 token（避免走到 hdr=nil 的 bug path）
+      header_names:
+        - Authorization
+
+      # ✅ 明確指定 Bearer（避免它去解析別的格式）
+      auth_header_name: Authorization
+      auth_header_claims:
+        - Bearer
+
+  # ✅ /api 需要 JWT
   - name: jwt
     route: api-protected
     config:
       claims_to_verify: [exp]
       key_claim_name: kid
       run_on_preflight: false
+      header_names:
+        - Authorization
+      auth_header_name: Authorization
+      auth_header_claims:
+        - Bearer
 
+  # ✅ /admin 需要 JWT
   - name: jwt
     route: admin-protected
     config:
       claims_to_verify: [exp]
       key_claim_name: kid
       run_on_preflight: false
+      header_names:
+        - Authorization
+      auth_header_name: Authorization
+      auth_header_claims:
+        - Bearer
 
+  # ✅ CORS
   - name: cors
     config:
       origins:
@@ -94,4 +117,3 @@ plugins:
         - Authorization
       credentials: false
       max_age: 3600
-
