@@ -55,6 +55,12 @@ services:
         strip_path: false
         protocols: [http, https]
 
+      - name: api-posts-search
+        paths:
+          - /api/posts/search
+        strip_path: false
+        protocols: [http, https]
+
       # 🔒 其餘 /api（需要 JWT）
       - name: api-protected
         paths:
