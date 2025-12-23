@@ -81,21 +81,21 @@ plugins:
     route: v1-protected
     config:
       claims_to_verify: [exp]
-      key_claim_name: kid
+      key_claim_name: iss
       run_on_preflight: false
 
   - name: jwt
     route: api-protected
     config:
       claims_to_verify: [exp]
-      key_claim_name: kid
+      key_claim_name: iss
       run_on_preflight: false
 
   - name: jwt
     route: admin-protected
     config:
       claims_to_verify: [exp]
-      key_claim_name: kid
+      key_claim_name: iss
       run_on_preflight: false
 
   # ---------- Rate Limiting ----------
